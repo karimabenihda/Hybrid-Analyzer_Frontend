@@ -1,5 +1,7 @@
 import "./globals.css";
 import { Montserrat } from "next/font/google";
+import { Providers } from "./providers";
+
 const montserrat = Montserrat({ 
   // weight: ["300", "600"],
    subsets: ["latin"] });
@@ -16,7 +18,7 @@ export default function RootLayout({ children }) {
       <body
 className={`${montserrat.className} antialiased`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
