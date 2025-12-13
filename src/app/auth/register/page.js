@@ -27,7 +27,7 @@ function page() {
   const handleRegister = async (values, { setSubmitting, setErrors }) => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/register",
+        "https://karimabenihda-hyber-analyzer-fastapi.hf.space/register",
         {
           firstname: values.firstname,
           lastname: values.lastname,

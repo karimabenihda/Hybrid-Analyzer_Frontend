@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-
+import { useRouter } from "next/navigation";
 function Page() {
     const [text, setText] = useState('')
     const[name,setName]=useState('')
@@ -15,10 +15,25 @@ function Page() {
     const [summaryLoading, setSummaryLoading] = useState(false);
     const [summaryError, setSummaryError] = useState(null);
 
+    const router = useRouter();
+
+//     useEffect(() => {
+//     const checkAuth = async () => {
+//         try {
+//             await axios.get("http://127.0.0.1:8000/auth/me", { withCredentials: true });
+//         } catch (err) {
+//             router.push("/auth/login")
+//         }
+//     };
+
+//     checkAuth();
+// }, []);
+    
+
 
     const add_category=async(values)=>{
       try{
-        const response = await axios.post('http://127.0.0.1:8000/categories',
+        const response = await axios.post('https://karimabenihda-hyber-analyzer-fastapi.hf.space/categories',
             {name:values.name},
              {
           headers: {
@@ -37,7 +52,7 @@ function Page() {
 
     const fetch_categories = async () => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/categories')
+            const response = await axios.get('https://karimabenihda-hyber-analyzer-fastapi.hf.space/categories')
             setCategories(response.data.categories)
         } catch (error) {
             console.log(error)
@@ -54,10 +69,13 @@ function Page() {
         setResult(null);
 
         try {
-            const response = await axios.post("http://127.0.0.1:8000/analyze", {
+            const response = await axios.post("https://karimabenihda-hyber-analyzer-fastapi.hf.space/analyze", {
                 text: text,
                 categories: selectedCategories,
-            }, {
+            }, 
+              { withCredentials: true },
+
+            {
                 headers: { "Content-Type": "application/json" }
             });
 
@@ -95,7 +113,7 @@ function Page() {
         setSummaryError(null);
         
         const response = await axios.post(
-            'http://127.0.0.1:8000/classify',
+            'https://karimabenihda-hyber-analyzer-fastapi.hf.space/classify',
             {
                 text: textData.text,
                 score: textData.result.score,
