@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
+import Image from "next/image";
 
 const validationSchema = Yup.object({
 firstname: Yup.string()
@@ -48,7 +49,7 @@ function page() {
 
       toast.success('Compte créé avec succès !')
       setTimeout(() => {
-        router.push('/analyze')
+        router.push('/auth/login')
       }, 600)
 
     } catch (error) {
@@ -70,6 +71,19 @@ function page() {
   }
 
   return (
+    <div>
+      <div className='flex justify-start'>
+
+<a href="/" aria-label="Hybrid Analyzer">
+                    <Image
+                        src="/images/logo_white.png"
+                        alt="Logo Hybrid-Analyzer"
+                        width="100"
+                        height="50"
+                    />
+                </a>
+      </div>
+
     <div className="flex justify-center items-center h-screen ">
       <Formik
         initialValues={{
@@ -161,7 +175,7 @@ function page() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="mt-2 w-full h-11 rounded-full bg-[#301469] text-white hover:opacity-90 transition-opacity"
+              className="mt-2 w-full h-11 rounded-full bg-[#301469] text-white hover:opacity-90 transition-opacity hover:cursor-pointer"
             >
               {isSubmitting ? 'Creation de compte...' : 'S’inscrire'}
             </button>
@@ -175,6 +189,7 @@ function page() {
           </Form>
         )}
       </Formik>
+    </div>
     </div>
   )
 }

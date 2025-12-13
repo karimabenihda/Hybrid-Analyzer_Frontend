@@ -41,12 +41,12 @@ export default function Accueil() {
                     {!connecte ? (
                         <div className="flex gap-2">
                             <a href="/auth/login">
-                                <button className="px-6 py-2.5 bg-purple-600 hover:bg-purple-700 active:scale-95 transition-all rounded-full text-sm">
+                                <button className="px-6 py-2.5 bg-purple-600 hover:bg-purple-700 active:scale-95 transition-all rounded-full text-sm hover:cursor-pointer">
                                     Connexion
                                 </button>
                             </a>
                             <a href="/auth/register">
-                                <button className="px-6 py-2.5 bg-white text-purple-600 hover:bg-gray-100 active:scale-95 transition-all rounded-full text-sm">
+                                <button className="hover:cursor-pointer px-6 py-2.5 bg-white text-purple-600 hover:bg-gray-100 active:scale-95 transition-all rounded-full text-sm">
                                     Inscription
                                 </button>
                             </a>
@@ -54,7 +54,7 @@ export default function Accueil() {
                     ) : (
                         <button 
                             onClick={() => router.push("/analyze")} 
-                            className="px-6 py-2.5 bg-purple-600 hover:bg-purple-700 active:scale-95 transition-all rounded-full text-sm"
+                            className="hover:cursor-pointer px-6 py-2.5 bg-purple-600 hover:bg-purple-700 active:scale-95 transition-all rounded-full text-sm"
                         >
                             Analyser
                         </button>
@@ -95,7 +95,7 @@ export default function Accueil() {
 
                     <div className="flex items-center gap-4 mt-8">
                         <a href="/auth/login">
-                            <button className="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-7 h-11">
+                            <button className="hover:cursor-pointer bg-purple-600 hover:bg-purple-700 text-white rounded-full px-7 h-11">
                                 Commencer
                             </button>
                         </a>
@@ -204,7 +204,7 @@ export default function Accueil() {
                         </h1>
                         <p className="text-white text-sm mt-2">Débloquez instantanément toutes nos ressources gratuites.</p>
                         <a href="/auth/login">
-                            <button className="px-12 py-2.5 mt-6 rounded-full text-sm border border-[#54487B] active:scale-95 transition-all bg-gradient-to-r from-[#A992F2] to-[#DFAB9B] bg-clip-text text-transparent">
+                            <button className="hover:cursor-pointer px-12 py-2.5 mt-6 rounded-full text-sm border border-[#54487B] active:scale-95 transition-all bg-gradient-to-r from-[#A992F2] to-[#DFAB9B] bg-clip-text text-transparent">
                                 Commencer
                             </button>
                         </a>

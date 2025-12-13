@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useRouter } from "next/navigation";
 import { Toaster, toast } from 'sonner'
+import Image from "next/image";
 
 
 function Page() {
@@ -50,23 +51,34 @@ function Page() {
     }
   }
 
-    const add_category=async(values)=>{
-      try{
-        const response = await axios.post('https://karimabenihda-hyber-analyzer-fastapi.hf.space/categories',
-            {name:values.name},
-             {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-        )
+   const add_category = async (values) => {
+  if (!values.name || values.name.trim() === "" ) {
+    return toast.error("Veuillez remplir le champ de la catégorie")
+     
+  }
+if (categories.some(cat => cat.name.toLowerCase() === name.toLowerCase())) {
+    return toast.error("Cette catégorie existe déjà");
+  }
+  try {
+    const response = await axios.post(
+      'https://karimabenihda-hyber-analyzer-fastapi.hf.space/categories',
+      { name: values.name },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    toast.success("Catégorie ajoutée avec succès !");
     fetch_categories();        
     setName("");        
- }catch(error){
-       console.log(error)
+  } catch (error) {
+    console.log(error);
+    toast.error("Erreur lors de l'ajout de la catégorie. Veuillez réessayer.");
+  }
+};
 
-      }
-    }
 
     const fetch_categories = async () => {
         try {
@@ -79,7 +91,7 @@ function Page() {
 
     const handle_analyze = async () => {
         if (selectedCategories.length === 0 || text.trim() === "") {
-            return alert("Veuillez remplir le texte et sélectionner au moins une catégorie");
+            return toast.error("Veuillez remplir le texte et sélectionner au moins une catégorie");
         }
 
         setLoading(true);
@@ -174,13 +186,27 @@ const handleLogout = async () => {
   }
 
     return (
-<div>
-           <div className='flex justify-end'>
-             <button onClick={handleLogout}  className="px-6 m-2 py-2.5 bg-purple-600 hover:bg-purple-700 active:scale-95 transition-all rounded-full text-sm">
+<div className=''>
+  <nav className=" fixed flex justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-32 ">
+                <a href="/" aria-label="Hybrid Analyzer">
+                    <Image
+                        src="/images/logo_white.png"
+                        alt="Logo Hybrid-Analyzer"
+                        width="100"
+                        height="50"
+                    />
+                </a>
+
+          <button onClick={handleLogout}  className="hover:cursor-pointer
+              px-6 m-2 py-2.5 bg-purple-600 hover:bg-purple-700 active:scale-95 transition-all rounded-full text-sm">
             Logout         
           </button>
-           </div>
-<div className='space-y-10 p-3'>
+</nav> 
+       <br/>       
+       <br/>       
+
+
+ <div className='space-y-10 p-3'>
             <div className='flex justify-center'>
                 
                 <h2 className="text-3xl md:text-[30px]/12 font-medium text-gray-100 py-4 text-center">

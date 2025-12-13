@@ -5,6 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from "yup"
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import Image from "next/image";
 
 
 const validationSchema = Yup.object({
@@ -44,6 +45,17 @@ function page() {
   }
 
   return (
+    <div>
+<div className='flex justify-start'>
+<a href="/" className='fixed top-0 z-50 flex items-center justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-32  text-white text-sm' aria-label="Hybrid Analyzer">
+                    <Image
+                        src="/images/logo_white.png"
+                        alt="Logo Hybrid-Analyzer"
+                        width="100"
+                        height="50"
+                    />
+                </a>
+      </div>
     <div className="flex justify-center items-center h-screen ">
       <Toaster position='top-right' richColors />
 
@@ -122,7 +134,7 @@ function page() {
 
             <button
               type="submit"
-              className="mt-2 w-full h-11 rounded-full bg-[#301469] text-white hover:opacity-90 transition-opacity"
+              className="mt-2 w-full h-11 rounded-full bg-[#301469] text-white hover:opacity-90 transition-opacity hover:cursor-pointer"
             >Connecter
             </button>
 
@@ -137,6 +149,7 @@ S'inscrire              </a>
         )}
       </Formik>
 
+    </div>
     </div>
   )
 }

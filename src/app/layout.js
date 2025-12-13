@@ -10,6 +10,9 @@ const montserrat = Montserrat({
 export const metadata = {
   title: "Hybrid-Analyzer",
   description: "Hybrid-Analyzer est une application fullstack conçue pour automatiser l’analyse d’articles de veille grace à l’orchestration de deux services d’IA complementaires",
+  icons:{
+    icon:"../../images/logo.ico"
+  }
 };
 
 export default function RootLayout({ children }) {
