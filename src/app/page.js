@@ -4,6 +4,20 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
 export default function Home() {
+    const [loggedIn, setLoggedIn] = useState(false);
+
+    useEffect(() => {
+    const checkLogin = async () => {
+      try {
+        const res = await axios.get("https://karimabenihda-hyber-analyzer-fastapi.hf.space/auth/me", { withCredentials: true });
+        setLoggedIn(res.data.logged_in);
+      } catch (err) {
+        setLoggedIn(false);
+      }
+    };
+
+    checkLogin();
+  }, []);
   // const [menuOpen, setMenuOpen] = useState(false);
 
   // useEffect(() => {
@@ -29,14 +43,23 @@ export default function Home() {
      
 
         <div className="flex items-center gap-3">
+          {!loggedIn ? (
+            <div>
           <a href="/auth/login">
           <button className="  px-6 py-2.5 bg-purple-600 hover:bg-purple-700 active:scale-95 transition-all rounded-full text-sm">
             Login         
           </button>
           </a>
+         <a href="/auth/register">
           <button className="px-6 py-2.5 bg-white text-purple-600 hover:bg-gray-100  active:scale-95 transition-all rounded-full text-sm">
-Register          </button>
+            Register
+          </button></a>
+        </div>
+) : (
+       <button onClick={() => router.push("/analyze")} className="  px-6 py-2.5 bg-purple-600 hover:bg-purple-700 active:scale-95 transition-all rounded-full text-sm">
 
+      Analyze</button>
+      )}
         </div>
       </nav>
 

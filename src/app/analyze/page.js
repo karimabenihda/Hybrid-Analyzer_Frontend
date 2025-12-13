@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useRouter } from "next/navigation";
+import { Toaster, toast } from 'sonner'
 
 
 function Page() {
@@ -132,6 +133,10 @@ const handleLogout = async () => {
       { withCredentials: true } 
     );
     console.log(response.data.message); 
+toast.success("Logout Successful");
+  setTimeout(() => {
+        router.push('/')
+      }, 600)
   } catch (error) {
     console.error("Logout failed:", error);
   }
