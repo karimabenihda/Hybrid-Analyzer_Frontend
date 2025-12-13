@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useRouter } from "next/navigation";
+
+
 function Page() {
     const [text, setText] = useState('')
     const[name,setName]=useState('')
@@ -16,20 +18,6 @@ function Page() {
     const [summaryError, setSummaryError] = useState(null);
 
     const router = useRouter();
-
-//     useEffect(() => {
-//     const checkAuth = async () => {
-//         try {
-//             await axios.get("http://127.0.0.1:8000/auth/me", { withCredentials: true });
-//         } catch (err) {
-//             router.push("/auth/login")
-//         }
-//     };
-
-//     checkAuth();
-// }, []);
-    
-
 
     const add_category=async(values)=>{
       try{
@@ -135,9 +123,31 @@ function Page() {
     }
 };
 
+    
+const handleLogout = async () => {
+  try {
+    const response = await axios.post(
+      'https://karimabenihda-hyber-analyzer-fastapi.hf.space/logout',
+      {},
+      { withCredentials: true } 
+    );
+    console.log(response.data.message); 
+  } catch (error) {
+    console.error("Logout failed:", error);
+  }
+};
+
+
     return (
-        <div className='space-y-10 p-3'>
+<div>
+           <div className='flex justify-end'>
+             <button onClick={handleLogout}  className="px-6 m-2 py-2.5 bg-purple-600 hover:bg-purple-700 active:scale-95 transition-all rounded-full text-sm">
+            Logout         
+          </button>
+           </div>
+<div className='space-y-10 p-3'>
             <div className='flex justify-center'>
+                
                 <h2 className="text-3xl md:text-[30px]/12 font-medium text-gray-100 py-4 text-center">
                     Paste your text or your article and choose categories
                 </h2>
@@ -307,7 +317,7 @@ function Page() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div></div>
     )
 }
 
