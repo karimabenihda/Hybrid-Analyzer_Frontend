@@ -7,18 +7,22 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 
 const validationSchema = Yup.object({
-  firstname: Yup.string()
-    .min(2, 'First name must be at least 2 characters')
-    .required('First name is required'),
-  lastname: Yup.string()
-    .min(2, 'Last name must be at least 2 characters')
-    .required('Last name is required'),
-  username: Yup.string()
-    .email('Invalid email address')
-    .required('Email is required'),
-  password: Yup.string()
-    .min(8, 'Password must be at least 8 characters')
-    .required('Password is required'),
+firstname: Yup.string()
+  .min(2, 'Le prénom doit contenir au moins 2 caractères')
+  .required('Le prénom est requis'),
+
+lastname: Yup.string()
+  .min(2, 'Le nom doit contenir au moins 2 caractères')
+  .required('Le nom est requis'),
+
+username: Yup.string()
+  .email('Adresse e-mail invalide')
+  .required('L’adresse e-mail est requise'),
+
+password: Yup.string()
+  .min(8, 'Le mot de passe doit contenir au moins 8 caractères')
+  .required('Le mot de passe est requis'),
+
 })
 
 function page() {
@@ -42,7 +46,7 @@ function page() {
         }
       )
 
-      toast.success('Account created successfully!')
+      toast.success('Compte créé avec succès !')
       setTimeout(() => {
         router.push('/analyze')
       }, 600)
@@ -52,13 +56,13 @@ function page() {
 
       if (error.response) {
         if (error.response.status === 403) {
-          toast.error('User already exists!')
-          setErrors({ username: 'This email is already registered' })
+          toast.error('L’utilisateur existe déjà !')
+          setErrors({ username: 'Cet email est déjà enregistré' })
         } else {
-          toast.error(error.response.data.detail || 'Registration failed!')
+          toast.error(error.response.data.detail || 'L’inscription a échoué !')
         }
       } else {
-        toast.error('Network error. Please try again.')
+        toast.error('Erreur réseau. Veuillez réessayer.')
       }
     } finally {
       setSubmitting(false)
@@ -69,7 +73,7 @@ function page() {
     <div className="flex justify-center items-center h-screen ">
       <Formik
         initialValues={{
-            firstname: '',
+          firstname: '',
           lastname: '',
           username: '',
           password: ''
@@ -81,10 +85,10 @@ function page() {
           <Form className="w-full sm:w-[380px] text-center border border-zinc-300/60 dark:border-zinc-700 rounded-2xl px-8 bg-white dark:bg-zinc-900">
 
             <h1 className="text-zinc-900 dark:text-white text-3xl mt-10 font-medium">
-              Register
+              S’inscrire
             </h1>
             <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-2 pb-6">
-              Welcome !
+              Bienvenue !
             </p>
 
             {/* NAME */}
@@ -96,7 +100,7 @@ function page() {
 
               <Field
                 type="text"
-                placeholder="firstname"
+                placeholder="Prénom"
                 name="firstname"
                 className="bg-transparent text-zinc-600 dark:text-zinc-200 placeholder-zinc-500 dark:placeholder-zinc-400 outline-none text-sm w-full h-full"
                 required
@@ -112,7 +116,7 @@ function page() {
 
               <Field
                 type="text"
-                placeholder="lastname"
+                placeholder="Nom"
                 name="lastname"
                 className="bg-transparent text-zinc-600 dark:text-zinc-200 placeholder-zinc-500 dark:placeholder-zinc-400 outline-none text-sm w-full h-full"
                 required
@@ -129,7 +133,7 @@ function page() {
 
               <Field
                 type="email"
-                placeholder="username"
+                placeholder="Nom d’utilisateur"
                 name="username"
                 className="bg-transparent text-zinc-600 dark:text-zinc-200 placeholder-zinc-500 dark:placeholder-zinc-400 outline-none text-sm w-full h-full"
                 required
@@ -146,7 +150,7 @@ function page() {
 
               <Field
                 type="password"
-                placeholder="Password"
+                placeholder="Mot de passe"
                 name="password"
                 className="bg-transparent text-zinc-600 dark:text-zinc-200 placeholder-zinc-500 dark:placeholder-zinc-400 outline-none text-sm w-full h-full"
                 required
@@ -159,13 +163,13 @@ function page() {
               disabled={isSubmitting}
               className="mt-2 w-full h-11 rounded-full bg-[#301469] text-white hover:opacity-90 transition-opacity"
             >
-              {isSubmitting ? 'Creating account...' : 'Register'}
+              {isSubmitting ? 'Creation de compte...' : 'S’inscrire'}
             </button>
 
             <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-3 mb-11">
-              Already have an account?{' '}
+            Vous avez déjà un compte?{' '}
               <a href="/auth/login" className="text-indigo-500 dark:text-indigo-400">
-                Login
+                Connectez-vous
               </a>
             </p>
           </Form>

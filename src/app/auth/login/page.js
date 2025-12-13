@@ -8,8 +8,8 @@ import { useRouter } from 'next/navigation'
 
 
 const validationSchema = Yup.object({
-  username: Yup.string().required("Username is required"),
-  password: Yup.string().required("Password is required")
+  username: Yup.string().required("Le nom d’utilisateur est requis"),
+  password: Yup.string().required("Le mot de passe est requis")
 })
 
 
@@ -29,17 +29,17 @@ function page() {
           username: values.username,
           password: values.password
         },
-        { headers: { "Content-Type": "application/json" } }
+        { headers: { "Content-Type": "application/json" } ,withCredentials: true}
       )
 
-      toast.success("Login Successful")
+      toast.success("Connexion réussie")
 
       setTimeout(() => {
         router.push('/analyze')
       }, 600)
 
     } catch (error) {
-      toast.error('Invalid Credentials or server error')
+      toast.error('Identifiants invalides ou erreur du serveur')
     }
   }
 
@@ -58,10 +58,10 @@ function page() {
           >
 
             <h1 className="text-zinc-900 dark:text-white text-3xl mt-10 font-medium">
-              Login
+              Connexion
             </h1>
             <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-2 pb-6">
-              Wellcome back!
+              Bon retour !
             </p>
 
             {/* USERNAME */}
@@ -75,7 +75,7 @@ function page() {
               <Field
                 name="username"
                 type="text"
-                placeholder="Username"
+                placeholder="nom d’utilisateur"
                 className="bg-transparent text-zinc-600 dark:text-zinc-200 placeholder-zinc-500 dark:placeholder-zinc-400 outline-none text-sm w-full h-full"
                 value={username}
                 onChange={(e) => {
@@ -103,7 +103,7 @@ function page() {
               <Field
                 name="password"
                 type="password"
-                placeholder="Password"
+                placeholder="mot de passe"
                 className="bg-transparent text-zinc-600 dark:text-zinc-200 placeholder-zinc-500 dark:placeholder-zinc-400 outline-none text-sm w-full h-full"
                 value={password}
                 onChange={(e) => {
@@ -123,15 +123,14 @@ function page() {
             <button
               type="submit"
               className="mt-2 w-full h-11 rounded-full bg-[#301469] text-white hover:opacity-90 transition-opacity"
-            >
-              Login
+            >Connecter
             </button>
 
             <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-3 mb-11">
-              Don't have an account?
+              Vous n’avez pas de compte ?
               <a href="/auth/register" className="text-indigo-500 dark:text-indigo-400">
-                Create Account
-              </a>
+
+S'inscrire              </a>
             </p>
 
           </Form>

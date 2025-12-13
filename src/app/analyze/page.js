@@ -7,18 +7,48 @@ import { Toaster, toast } from 'sonner'
 
 function Page() {
     const [text, setText] = useState('')
-    const[name,setName]=useState('')
+    const [name,setName]=useState('')
     const [categories, setCategories] = useState([])
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [result, setResult] = useState(null);
-    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    const [loading, setLoading] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
+     
+    const [analyzing, setAnalyzing] = useState(false)
 
     const [summary, setSummary] = useState(null);
     const [summaryLoading, setSummaryLoading] = useState(false);
     const [summaryError, setSummaryError] = useState(null);
 
     const router = useRouter();
+
+    useEffect(() => {
+        checkAuth()
+    }, [])
+
+  const checkAuth = async () => {
+    try {
+      const response = await axios.get(
+        "https://karimabenihda-hyber-analyzer-fastapi.hf.space/auth/me",
+        { withCredentials: true }
+      )
+      
+      if (response.data.logged_in) {
+        setIsAuthenticated(true)
+      } else {
+        toast.error("Veuillez d’abord vous connecter")
+        router.push('/auth/login')
+      }
+    } catch (error) {
+      console.error('Auth check failed:', error)
+      toast.error("Veuillez d’abord vous connecter")
+      router.push('/auth/login')
+    } finally {
+      setLoading(false)
+    }
+  }
 
     const add_category=async(values)=>{
       try{
@@ -38,7 +68,6 @@ function Page() {
       }
     }
 
-
     const fetch_categories = async () => {
         try {
             const response = await axios.get('https://karimabenihda-hyber-analyzer-fastapi.hf.space/categories')
@@ -50,7 +79,7 @@ function Page() {
 
     const handle_analyze = async () => {
         if (selectedCategories.length === 0 || text.trim() === "") {
-            return alert("Please fill the text and select at least one category");
+            return alert("Veuillez remplir le texte et sélectionner au moins une catégorie");
         }
 
         setLoading(true);
@@ -72,7 +101,7 @@ function Page() {
             setResult(response.data);
         } catch (error) {
             console.error(error);
-            setError(error.response?.data?.detail || "An error occurred during analysis");
+            setError(error.response?.data?.detail || "Une erreur est survenue lors de l’analyse");
         } finally {
             setLoading(false);
         }
@@ -114,10 +143,10 @@ function Page() {
         );
         
         setSummary(response.data);
-        console.log("Summary generated:", response.data);
+        // console.log("Summary generated:", response.data);
         
     } catch (error) {
-        console.error("Error generating summary:", error);
+        // console.error("Error generating summary:", error);
         setSummaryError(error.response?.data?.detail || "Failed to generate summary");
     } finally {
         setSummaryLoading(false);
@@ -132,16 +161,17 @@ const handleLogout = async () => {
       {},
       { withCredentials: true } 
     );
-    console.log(response.data.message); 
-toast.success("Logout Successful");
+ toast.success("Déconnexion réussie");
   setTimeout(() => {
-        router.push('/')
+      router.push('/auth/login')
       }, 600)
   } catch (error) {
-    console.error("Logout failed:", error);
+    console.error("Échec de la déconnexion :", error);
   }
 };
-
+ if (!isAuthenticated) {
+    return null
+  }
 
     return (
 <div>
@@ -154,8 +184,7 @@ toast.success("Logout Successful");
             <div className='flex justify-center'>
                 
                 <h2 className="text-3xl md:text-[30px]/12 font-medium text-gray-100 py-4 text-center">
-                    Paste your text or your article and choose categories
-                </h2>
+Collez votre texte ou votre article et choisissez les catégories                </h2>
             </div>
 
             <div className="flex flex-col md:flex-row w-full gap-6">
@@ -170,7 +199,7 @@ toast.success("Logout Successful");
                                 value={text}
                             ></textarea>
                             <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-gray-100 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-gray-500 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-gray-500 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-gray-100 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-100 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-gray-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-gray-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
-                                Put your article here
+                                Mettez votre article ici
                             </label>
                         </div>
                     </div>
@@ -186,7 +215,7 @@ toast.success("Logout Successful");
                                      active:scale-100 hover:cursor-pointer
                                      disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            {loading ? "Analyzing..." : "Analyze"}
+                            {loading ? "Analyse en cours..." : "Analyser"}
                         </button>
                     </div>
 
@@ -198,7 +227,7 @@ toast.success("Logout Successful");
                             
                             <div className="mb-4">
                                 <p className="text-gray-300 mb-2">
-                                    <span className="font-semibold">Best Match:</span>{' '}
+                                    <span className="font-semibold">Meilleure correspondance :</span>{' '}
                                     <span className="text-green-400">{result.best_category}</span>
                                 </p>
                                 <p className="text-gray-300">
@@ -208,7 +237,7 @@ toast.success("Logout Successful");
                             </div>
 
                             <div>
-                                <p className="text-gray-300 font-semibold mb-2">All Categories:</p>
+                                <p className="text-gray-300 font-semibold mb-2">Toutes les catégories</p>
                                 <div className="space-y-2">
                                     {result.all_results.labels.map((label, index) => (
                                         <div key={index} className="flex items-center gap-2">
@@ -243,7 +272,7 @@ toast.success("Logout Successful");
                  active:scale-100 hover:cursor-pointer
                  disabled:opacity-50 disabled:cursor-not-allowed"
     >
-        {summaryLoading ? "Generating..." : "Generate Summary"}
+        {summaryLoading ? "Génération en cours…" : "Générer le résumé"}
     </button>
 </div>
                         </div>
@@ -260,13 +289,13 @@ toast.success("Logout Successful");
 
 {summary && (
     <div className="mt-4 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
-        <h3 className="font-semibold text-[#191130] text-lg mb-2">Summary</h3>
+        <h3 className="font-semibold text-[#191130] text-lg mb-2">Résumé</h3>
         <p className="text-gray-700 mb-3">{summary.summary}</p>
         <div className="flex gap-4 text-sm">
-            <span className="font-medium text-gray-500">Category: 
+            <span className="font-medium text-gray-500">Catégorie: 
                 <span className="ml-1 text-[#301469]">{summary.category}</span>
             </span>
-            <span className="font-medium text-gray-500">Tone: 
+            <span className="font-medium text-gray-500">Tonalité: 
                 <span className="ml-1 text-[#301469]">{summary.tone}</span>
             </span>
             <span className="font-medium text-gray-500">Score: 
@@ -276,7 +305,6 @@ toast.success("Logout Successful");
     </div>
 )}
 
-                    {/* Error Section */}
                     {error && (
                         <div className="mt-6 p-4 bg-red-900/20 border border-red-700 rounded-lg">
                             <p className="text-red-400">{error}</p>
@@ -286,10 +314,10 @@ toast.success("Logout Successful");
 
                 {/* RIGHT COLUMN: Categories */}
                 <div className="part2 w-full md:w-1/2">
-                    <h1 className="text-xl font-semibold mb-4 text-gray-100">Categories</h1>
+                    <h1 className="text-xl font-semibold mb-4 text-gray-100">Catégories</h1>
 
             <div className="">
-                <label className="block mb-2.5 text-sm font-medium text-heading">Add category name </label>
+                <label className="block mb-2.5 text-sm font-medium text-heading">Ajouter le nom de la catégorie</label>
                     <input type="text" name="name" value={name} 
                     className="bg-neutral-secondary-medium border border-default-medium border-gray-200 rounded-md text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                     onChange={(e) => setName(e.target.value)}/>
@@ -300,7 +328,7 @@ toast.success("Logout Successful");
                 hover:opacity-90 hover:scale-105 
                 transition duration-300 ease-in-out 
                 active:scale-100 hover:cursor-pointer
-                disabled:opacity-50 disabled:cursor-not-allowed" >Add</button>
+                disabled:opacity-50 disabled:cursor-not-allowed" >Ajouter</button>
         </div>
                     <div className="flex flex-wrap gap-4">
 
