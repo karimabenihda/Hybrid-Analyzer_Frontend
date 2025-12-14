@@ -72,9 +72,8 @@ function page() {
 
   return (
     <div>
-      <div className='flex justify-start'>
-
-<a href="/" aria-label="Hybrid Analyzer">
+<div className='flex justify-start'>
+<a href="/" className='fixed top-0 z-50 flex items-center justify-between w-full py-4 px-6 md:px-16 lg:px-24 xl:px-32  text-white text-sm' aria-label="Hybrid Analyzer">
                     <Image
                         src="/images/logo_white.png"
                         alt="Logo Hybrid-Analyzer"
